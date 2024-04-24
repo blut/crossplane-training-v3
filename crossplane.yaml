@@ -1,39 +1,19 @@
 apiVersion: meta.pkg.crossplane.io/v1alpha1
 kind: Configuration
 metadata:
-  name: configuration-eks
+  name: configuration-crossplane-training-v3
   annotations:
     meta.crossplane.io/maintainer: The Getting Started Organization <support@starter.org>
-    meta.crossplane.io/source: github.com/upbound/configuration-eks
-    meta.crossplane.io/license: Apache-2.0
-    meta.crossplane.io/description: |
-      This AWS starter configuration offers Kubernetes Clusters backed by EKS.
-    meta.crossplane.io/readme: |
-      This Configuration bundles an Upbound Cloud extension and an API
-      definition. The API will allow control planes to provision fully
-      configured Amazon Elastic Kubernetes Service (EKS) clusters, composed
-      using cloud service primitives from the [Upbound Official AWS
-      Provider](https://marketplace.upbound.io/providers/upbound/provider-aws).
+    meta.crossplane.io/source: github.com/blut/crossplane-training-v3
 spec:
   crossplane:
-    version: ">=v1.14.0"
+    version: ">=v1.15.0"
   dependsOn:
     - provider: xpkg.upbound.io/upbound/provider-family-aws
       version: ">=v1.3.0"
-    - provider: xpkg.upbound.io/upbound/provider-aws-iam
-      version: ">=v1.3.0"
-    - provider: xpkg.upbound.io/upbound/provider-aws-eks
-      version: ">=v1.3.0"
-    - provider: xpkg.upbound.io/upbound/provider-aws-ec2
-      version: ">=v1.3.0"
     - provider: xpkg.upbound.io/upbound/provider-aws-s3
       version: ">=v1.3.0"
-    - configuration: xpkg.upbound.io/upbound/configuration-aws-eks-irsa
-      # renovate: datasource=github-releases depName=upbound/configuration-aws-eks-irsa
-      version: "v0.7.0"
+    - provider: xpkg.upbound.io/upbound/provider-aws-sns
+      version: ">=v1.3.0"
     - provider: xpkg.upbound.io/upbound/provider-aws-sqs
-      # renovate: datasource=github-releases depName=upbound/provider-aws
-      version: "v1.1.0"
-    - provider: xpkg.upbound.io/upbound/provider-aws-cloudwatchevents
-      # renovate: datasource=github-releases depName=upbound/provider-aws
-      version: "v1.1.0"
+      version: ">=v1.3.0"

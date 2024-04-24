@@ -1,0 +1,79 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: bucket-composition
+spec:
+  compositeTypeRef:
+    apiVersion: example.org/v1alpha1
+    kind: XBucket
+  mode: Pipeline
+  pipeline:
+    - step: patch-and-transform
+      functionRef:
+        name: function-patch-and-transform
+      input:
+        apiVersion: pt.fn.crossplane.io/v1beta1
+        kind: Resources
+        resources:
+          - name: bucket
+            base:
+              apiVersion: s3.aws.crossplane.io/v1beta1
+              kind: Bucket
+              metadata:
+                name: # patched
+              spec:
+                forProvider:
+                  acl: private
+                  locationConstraint: eu-central-1
+                  notificationConfiguration:
+                    queueConfigurations:
+                    - events: # patched
+                      queueArnRef:
+                        name: # patched
+                providerConfigRef:
+                  name: default
+            patches:
+              - fromFieldPath: metadata.name
+                toFieldPath: metadata.name
+              - fromFieldPath: spec.parameters.notifyEventNames
+                toFieldPath: spec.forProvider.notificationConfiguration.queueConfigurations[0].events
+              - fromFieldPath: metadata.name
+                toFieldPath: spec.forProvider.notificationConfiguration.queueConfigurations[0].queueArnRef.name
+          - name: queue
+            base:
+              apiVersion: sqs.aws.crossplane.io/v1beta1
+              kind: Queue
+              metadata:
+                name: # patched
+              spec:
+                forProvider:
+                  region: eu-central-1
+                  delaySeconds: 4
+                  policy: |
+                    {
+                      "Version": "2012-10-17",
+                      "Id": "allow-s3",
+                      "Statement": [
+                        {
+                          "Sid": "allow-s3",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "s3.amazonaws.com"
+                          },
+                          "Action": [
+                            "SQS:SendMessage"
+                          ],
+                          "Resource": "*",
+                          "Condition": {
+                            "ArnLike": {
+                              "aws:SourceArn": "arn:aws:s3:*:*:*"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                providerConfigRef:
+                  name: default
+            patches:
+              - fromFieldPath: metadata.name
+                toFieldPath: metadata.name

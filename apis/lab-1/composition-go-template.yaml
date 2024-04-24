@@ -24,7 +24,7 @@ spec:
               annotations:
                 gotemplating.fn.crossplane.io/composition-resource-name: bucket
               labels:
-                reference: {{ .observed.composite.metadata.name }}-bucket
+                reference: {{ .observed.composite.resource.metadata.name }}-bucket
               name: {{ .observed.composite.resource.metadata.name }}
             spec:
               forProvider:
@@ -45,7 +45,7 @@ spec:
                     reference: {{ .observed.composite.resource.metadata.name }}-bucket
                 region: {{ .observed.composite.resource.spec.parameters.region }}
                 queue:
-                  - events: {{ .observed.composite.resource.spec.parameters.notificationEventNames }}
+                  - events: {{ .observed.composite.resource.spec.parameters.notifyEventNames }}
                     queueArn: {{ .observed.composite.resource.status.output.queueArn }}
               providerConfigRef:
                 name: default

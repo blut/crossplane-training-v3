@@ -24,9 +24,20 @@ spec:
                 parameters:
                   type: object
                   properties:
+                    region:
+                      type: string
+                      default: eu-central-1
                     notifyEventNames:
                       type: array
                       items:
                         type: string
                   required:
                     - notifyEventNames
+            status:
+              type: object
+              properties:
+                output:
+                  type: object
+                  properties:
+                    queueArn:
+                      type: string

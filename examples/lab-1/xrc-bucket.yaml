@@ -4,7 +4,10 @@ metadata:
   name: my-bucket
   namespace: default
 spec:
+  compositionRef:
+    name: bucket-composition-v2
   parameters:
     notifyEventNames:
       - s3:ObjectCreated:*
       - s3:ObjectRemoved:*
+    region: eu-central-1

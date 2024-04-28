@@ -17,3 +17,7 @@ spec:
       version: ">=v1.3.0"
     - provider: xpkg.upbound.io/upbound/provider-aws-sqs
       version: ">=v1.3.0"
+    - provider: xpkg.upbound.io/upbound/provider-azure-compute
+      version: ">=v1.1.0"
+    - provider: xpkg.upbound.io/upbound/provider-azure-network
+      version: ">=v1.1.0"

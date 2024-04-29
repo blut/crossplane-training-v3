@@ -31,7 +31,7 @@ spec:
                 region: {{ .observed.composite.resource.spec.parameters.region }}
 
             {{- if .observed.composite.resource.spec.parameters.notifyEventNames }}
-              {{- if .observed.composite.resource.status.output.queueArn }}
+              {{- if .observed.resources.queue.status.atProvider.arn  }}
             ---
             apiVersion: s3.aws.upbound.io/v1beta1
             kind: BucketNotification
@@ -47,7 +47,7 @@ spec:
                 region: {{ .observed.composite.resource.spec.parameters.region }}
                 queue:
                   - events: {{ .observed.composite.resource.spec.parameters.notifyEventNames }}
-                    queueArn: {{ .observed.composite.resource.status.output.queueArn }}
+                    queueArn: {{ .observed.resources.queue.status.atProvider.arn  }}
               providerConfigRef:
                 name: default
               {{- end }}
@@ -88,15 +88,6 @@ spec:
                   }
               providerConfigRef:
                 name: default
-
-              {{- with .observed.resources.queue }}
-            ---
-            apiVersion: example.org/v1alpha1
-            kind: XBucket
-            status:
-              output:
-                queueArn: {{ .status.atProvider.arn }}
-              {{- end }}
             {{- end }}
     - step: automatically-detect-ready-composed-resources
       functionRef:
